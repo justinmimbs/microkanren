@@ -1,0 +1,13 @@
+name: microkanren
+version: '0.1.0.0'
+author: Justin Mimbs
+maintainer: justin.mimbs@gmail.com
+license: BSD3
+github: justinmimbs/microkanren
+library:
+  source-dirs: src
+  exposed-modules:
+  - MicroKanren
+  dependencies:
+  - base >=4.7 && <5
+  - containers >=0.5 && <0.6
