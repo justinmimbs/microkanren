@@ -1,6 +1,7 @@
 module MicroKanren
     where
 
+import           Data.List (intercalate)
 import           Data.Map (Map)
 import qualified Data.Map as Map
 import           Data.Maybe (maybe)
@@ -14,7 +15,7 @@ data Term
     | Atom String
     | Pair Term Term
     | Unit
-    deriving (Eq, Show)
+    deriving (Eq)
 
 
 type Subst =
@@ -158,6 +159,52 @@ infixl 2 <+>
 (<+>) =
     disj
 
+
+-- expressions
+
+instance Show Term where
+    show term =
+        case term of
+            Var n ->
+                "_." ++ show n
+
+            Atom s ->
+                "'" ++ s ++ "'"
+
+            Pair _ _ ->
+                "[ " ++ (term |> toList |> map show |> intercalate ", ") ++ " ]"
+
+            Unit ->
+                "[]"
+
+
+toList :: Term -> [ Term ]
+toList term =
+    case term of
+        Pair a b@(Pair _ _) ->
+            a : toList b
+
+        Pair a Unit ->
+            [ a ]
+
+        Pair a b ->
+            [ a, b ]
+
+        x ->
+            [ x ]
+
+
+list :: [ Term ] -> Term
+list =
+    foldr Pair Unit
+
+
+str :: String -> Term
+str =
+    Atom
+
+
+--
 
 (|>) :: a -> (a -> b) -> b
 (|>) =
