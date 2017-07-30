@@ -36,13 +36,11 @@ fails _ =
     []
 
 
--- all goals
 conjAll :: [ Goal ] -> Goal
 conjAll =
     foldl conj succeeds
 
 
--- any goal
 disjAll :: [ Goal ] -> Goal
 disjAll =
     foldl disj fails
